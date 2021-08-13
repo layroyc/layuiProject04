@@ -308,6 +308,34 @@ public class UserDao {
         return i;
     }
 
+    //修改id is_del
+    public int updateSelectById(Integer sfDel , Integer userId){
+        //1.创建出 连接对象
+        Connection conn = DBHelper.getConnection();
+        //2.创建出SQL语句
+        String sql = "update t_user set is_del=? where id=?";
+        //3.创建preparedStatement,执行sql
+        PreparedStatement ps = null;
+        int i = 0;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,sfDel);
+            ps.setInt(2,userId);
+            i = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return i;
+    }
+
+
     public static void main(String[] args) {
         //全查
         UserDao userDao = new UserDao();
@@ -382,6 +410,10 @@ public class UserDao {
         //查总条数
        /* int count = userDao.selectCount();
         System.out.println("count = " + count);*/
+
+       //修改 is_del
+        int up2 = userDao.updateSelectById(2,39);
+        System.out.println("up2 = " + up2);
 
     }
 }

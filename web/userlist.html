@@ -12,7 +12,7 @@
 
 <!--我是修改-->
 <script type="text/html" id="updateHtml">
-    <form class="layui-form  layui-form-pane" action="" onsubmit="return false">
+    <form class="layui-form  layui-form-pane" action="" onsubmit="return false" lay-filter="myUpdate" >
 
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
@@ -166,11 +166,10 @@
                             }
                         }}
                 , {field: 'is_del', title: '是否能用', width: 160,templet:function (d) {
-                        if(d.is_del==1){
-                            return " <input type=\"checkbox\" checked=\\\"\\\"   name=\"open\" lay-skin=\"switch\" lay-filter=\"switchTest\" lay-text=\"是|否\" value='是'>"
-                        }
-                        if(d.is_del==2){
-                            return " <input type=\"checkbox\" name=\"close\" lay-skin=\"switch\" lay-filter=\"switchTest\" lay-text=\"是 | 否\" value='否'>"
+                        if (d.is_del==1) {
+                            return "  <input type=\"checkbox\" checked=\"\" name=\"open\" lay-skin=\"switch\" lay-filter=\"switchTest\" lay-text=\"是|否\"   value='1' >"
+                        } else {
+                            return "  <input type=\"checkbox\"name=\"close\" lay-skin=\"switch\" lay-filter=\"switchTest\"  lay-text=\"是|否\"  value='2' >"
                         }
                     }}
                 , {field: 'img', title: '头像', width: 200,align:'center', templet:function () {
@@ -244,6 +243,19 @@
                         console.log(layero)
                         console.log(index)
                         console.log(" 我是 layer 弹出成功后的回调")
+                        console.log(data)
+
+                        //给表单赋值
+                        form.val("myUpdate", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                            "username": data.username // "name": "value"
+                            ,"real_name": data.real_name
+                            ,"password": data.password
+                            ,"type": data.type
+                            ,"is_del": data.is_del
+                            ,"create_time": data.create_time
+                            ,"modify_time": data.modify_time
+                        });
+
                         form.render();  // 重点:强调: 当界面发生改变时, 记得 重新渲染模块,不然不显示效果
                         //日期时间选择器
                         laydate.render({
@@ -271,32 +283,33 @@
 
         //监听指定开关
         form.on('switch(switchTest)', function (data) {
-            //console.log(data)
-            // console.log(data.othis)
+            console.log(data)
+            console.log(data.othis.parents('tr').find("td").eq(1).text())
+            console.log("看上面")
+            var userId = data.othis.parents('tr').find("td").eq(1).text();
             var x = this.checked ? true : false;
             console.log(x)
             if (x) {
                 console.log("是,,,,true")
-                data.value = "是"
+                data.value = "1"
                 console.log(data.value)
             } else {
-                //  data.othis.value("凡人")
-                //   data.value("凡人")
-                //console.log($(data))
                 console.log("否,,,,else")
 
-                data.value = "否"
+                data.value = "2"
                 console.log(data.value)
             }
             $.ajax({
-                url: '/IsdelServlet',
+                url: '/UserUpdateForDelServlet',
                 type: 'post',
                 data: {
-                    "is_del": data.othis.text()
+                    //"is_del": data.othis.text()
+                    "sfDel":data.value,
+                    "userId":userId
                 },
                 dataType: 'json',
                 success: function (res) {
-                    alert("是否修改");
+                    //alert("是否修改");
                 }
             });
 

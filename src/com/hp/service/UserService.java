@@ -56,4 +56,19 @@ public class UserService {
        map2.put("object",map);
         return map2;
     }
+
+    //修改 是否可以使用
+    public Map updateUserById(Integer sfDel,Integer userId){
+        UserDao dao = new UserDao();
+        int i = dao.updateSelectById(sfDel, userId);
+        Map map = new HashMap();
+        if(i==1){
+            map.put("code",0);
+            map.put("msg","修改成功");
+        }else{
+            map.put("code",400);
+            map.put("msg","修改不成功");
+        }
+        return map;
+    }
 }

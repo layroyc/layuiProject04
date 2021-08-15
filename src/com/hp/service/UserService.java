@@ -71,4 +71,22 @@ public class UserService {
         }
         return map;
     }
+    //添加
+    public Map insertUser(User user){
+        System.out.println("sdfghjkl");
+        Map map = new HashMap();
+        UserDao dao = new UserDao();
+        System.out.println("dao = " + dao);
+        int i = dao.addUser(user);
+        System.out.println("i = " + i);
+        if(i>0){
+            map.put("code",0);
+            map.put("msg","添加成功");
+        }else{
+            map.put("code",4001);
+            map.put("msg","添加不成功");
+        }
+        return map;
+    }
+
 }

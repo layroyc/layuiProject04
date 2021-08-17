@@ -22,7 +22,7 @@ public class UserService {
             map.put("msg","账户或密码不正确");
             return map;
         }else{
-           //当登陆成功后，把信息放入到session作用域中
+            //当登陆成功后，把信息放入到session作用域中
             HttpSession session = request.getSession();
             session.setAttribute("user",userFromDB);
             map.put("code",0);
@@ -33,7 +33,7 @@ public class UserService {
 
     //带参数的分页查询
     public Map selectAllByParam(Map map1){
-       UserDao userDao = new UserDao();
+        UserDao userDao = new UserDao();
         List<User> users = userDao.selectAllParam(map1);
         int i = userDao.selectCount(map1);
         Map map = new HashMap();
@@ -50,10 +50,10 @@ public class UserService {
             data:[每条数据]
         }*/
 
-       Map map2 = new HashMap();
-       map2.put("number",20001);
-       map2.put("message","数据查询成功");
-       map2.put("object",map);
+        Map map2 = new HashMap();
+        map2.put("number",20001);
+        map2.put("message","数据查询成功");
+        map2.put("object",map);
         return map2;
     }
 
@@ -70,6 +70,33 @@ public class UserService {
             map.put("msg","修改不成功");
         }
         return map;
+    }
+
+    //修改全部
+    public Map updateUser(User user){
+        Map codeMap = new HashMap();
+        UserDao dao = new UserDao();
+        int i = dao.update(user);
+        if(i==1){
+            codeMap.put("code",0);
+            codeMap.put("msg","修改成功");
+        }else{
+            codeMap.put("code",400);
+            codeMap.put("msg","修改不成功");
+        }
+        return codeMap;
+    }
+
+    //按照id 查询1个user
+    public Map selectUserById(Integer id){
+        UserDao dao = new UserDao();
+        User user = dao.selectUserById(id);
+        Map codeMap = new HashMap();
+        codeMap.put("code",0);
+        codeMap.put("msg","ok");
+        codeMap.put("data",user);
+        return codeMap;
+
     }
     //添加
     public Map insertUser(User user){
@@ -88,5 +115,4 @@ public class UserService {
         }
         return map;
     }
-
 }

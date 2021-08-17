@@ -71,31 +71,22 @@ public class UserService {
         }
         return map;
     }
-
-    //修改全部
-    public Map updateUser(User user){
-        Map codeMap = new HashMap();
+    //添加
+    public Map insertUser(User user){
+        System.out.println("sdfghjkl");
+        Map map = new HashMap();
         UserDao dao = new UserDao();
-        int i = dao.update(user);
-        if(i==1){
-            codeMap.put("code",0);
-            codeMap.put("msg","修改成功");
+        System.out.println("dao = " + dao);
+        int i = dao.addUser(user);
+        System.out.println("i = " + i);
+        if(i>0){
+            map.put("code",0);
+            map.put("msg","添加成功");
         }else{
-            codeMap.put("code",400);
-            codeMap.put("msg","修改不成功");
+            map.put("code",4001);
+            map.put("msg","添加不成功");
         }
-        return codeMap;
+        return map;
     }
 
-    //按照id 查询1个user
-    public Map selectUserById(Integer id){
-        UserDao dao = new UserDao();
-        User user = dao.selectUserById(id);
-        Map codeMap = new HashMap();
-        codeMap.put("code",0);
-        codeMap.put("msg","ok");
-        codeMap.put("data",user);
-        return codeMap;
-
-    }
 }

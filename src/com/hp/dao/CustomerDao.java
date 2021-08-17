@@ -22,12 +22,32 @@ public class CustomerDao {
         List lists = new ArrayList();
         String page = (String) map.get("page");
         String limit = (String) map.get("limit");
+        String cust_name = (String) map.get("cust_name");
+        String cust_phone = (String) map.get("cust_phone");
+        String cust_sex = (String) map.get("cust_sex");
+        String username = (String) map.get("username");
+        String modify_time = (String) map.get("modify_time");
         //1.创建出 连接对象
         Connection connection = DBHelper.getConnection();
         //2.创建出SQL语句
         String sql = "select c.* ,t.username as username , t.password as password ,  t.real_name as real_name , t.type as type   from t_customer c  join t_user  t  on c.user_id  = t.id  where 1=1 ";
         //select * from c.*,t.id as user_id ,t.useranme as username, t.password as password, t.real_name as real_name, t.type as type from  t_customer c  join t_user  t  on c.user_id  = t.id where 1=1 and c.cust_birth='1977-11-15' and t.is_del=1;
         sql = sql + " and t.is_del=1   ";
+        if (null!=cust_name&&cust_name.length()>0){
+            sql = sql + " and cust_name   like  '%"+cust_name+"%'   ";
+        }
+        if (null!=cust_phone&&cust_phone.length()>0){
+            sql = sql + " and cust_phone   like  '%"+cust_phone+"%'   ";
+        }
+        if (null!=cust_sex&&cust_sex.length()>0){
+            sql = sql + " and cust_sex   =  "+cust_sex+"   ";
+        }
+        if (null!=username&&username.length()>0){
+            sql = sql + " and username   like  '%"+username+"%'   ";
+        }
+        if (null!=modify_time&&modify_time.length()>0){
+            sql = sql + " and modify_time   like  '%"+modify_time+"%'   ";
+        }
         sql = sql + " limit  ? ,  ?";
         System.out.println(" dao de limit sql = " + sql);
 
@@ -108,14 +128,14 @@ public class CustomerDao {
     public static void main(String[] args) {
         CustomerDao customerDao = new CustomerDao();
         Map paraMap = new HashMap();
-        /* paraMap.put("page","1");
+         paraMap.put("page","1");
         paraMap.put("limit","5");
 
         List<Map> maps = customerDao.selectAllByParam(paraMap);
         System.out.println("maps = " + maps);
-        System.out.println("maps.size() = " + maps.size());*/
-        int i = customerDao.selectAllParamCount(paraMap);
-        System.out.println("i = " + i);
+        System.out.println("maps.size() = " + maps.size());
+        /*int i = customerDao.selectAllParamCount(paraMap);
+        System.out.println("i = " + i);*/
 
 
     }

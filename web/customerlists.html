@@ -9,6 +9,45 @@
 </head>
 
 <body>
+
+<!--加上一个搜索框-->
+<form class="layui-form  layui-form-pane" action="" onsubmit="return false">
+    <div class="layui-form-item">
+        <label class="layui-form-label">顾客姓名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="cust_name"  placeholder="请输入顾客姓名" class="layui-input">
+        </div>
+
+        <label class="layui-form-label">顾客手机号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="cust_phone"  placeholder="请输入顾客手机号" class="layui-input">
+        </div>
+
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-inline">
+            <select name="cust_sex">
+                <option value="" selected="">请选择</option>
+                <option value="1">男</option>
+                <option value="2">女</option>
+            </select>
+        </div>
+
+        <label class="layui-form-label">拜访人</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username"  placeholder="请输入拜访人" class="layui-input">
+        </div>
+        <label class="layui-form-label">最后一次访问时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="modify_time"  placeholder="最后一次访问时间" class="layui-input" id="lastTime">
+        </div>
+
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">搜索</button>
+        </div>
+    </div>
+
+</form>
+
 <!-- 数据表格如何用呢? 第一步,拷贝一个 html  table 标记 -->
 <table class="layui-hide" id="test" lay-filter="test"></table>
 
@@ -64,13 +103,6 @@
                             return "<span style='color:green'>女</span>"
                         }
                     }}
-                /*, {field: 'is_del', title: '是否能用', width: 160,templet:function (d) {
-                        if (d.is_del==1) {
-                            return "  <input type=\"checkbox\" checked=\"\" name=\"open\" lay-skin=\"switch\" lay-filter=\"switchTest\" lay-text=\"是|否\"   value='1' >"
-                        } else {
-                            return "  <input type=\"checkbox\"name=\"close\" lay-skin=\"switch\" lay-filter=\"switchTest\"  lay-text=\"是|否\"  value='2' >"
-                        }
-                    }}*/
                 , {field: 'username', title: '拜访人', width: 200}
                 , {field: 'create_time', title: '第一次拜访时间', width: 160}
                 , {field: 'modify_time', title: '最后一次拜访时间', width: 160}
@@ -172,6 +204,31 @@
                 });
             }
         });
+
+        //监听搜索按钮
+        form.on('submit(searchBtn)',function (data) {
+            //alert('监听搜索')
+            console.log(data.field);
+
+            table.reload('test',{
+                where:{//设定异步数据接口的额外参数，任意设
+                    cust_name:data.field.cust_name
+                    ,cust_phone:data.field.cust_phone
+                    ,cust_sex:data.field.cust_sex
+                    ,username:data.field.username
+                    ,modify_time:data.field.modify_time
+                }
+                ,page:{
+                    curr:1//重新从第1页开始
+                }
+            });//只重再数据
+            form.render();
+            laydate.render({
+                elem: '#lastTime'
+                ,type: 'datetime'
+            });
+            return false;
+        })
     });
 </script>
 </body>

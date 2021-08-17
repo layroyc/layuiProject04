@@ -71,4 +71,31 @@ public class UserService {
         }
         return map;
     }
+
+    //修改全部
+    public Map updateUser(User user){
+        Map codeMap = new HashMap();
+        UserDao dao = new UserDao();
+        int i = dao.update(user);
+        if(i==1){
+            codeMap.put("code",0);
+            codeMap.put("msg","修改成功");
+        }else{
+            codeMap.put("code",400);
+            codeMap.put("msg","修改不成功");
+        }
+        return codeMap;
+    }
+
+    //按照id 查询1个user
+    public Map selectUserById(Integer id){
+        UserDao dao = new UserDao();
+        User user = dao.selectUserById(id);
+        Map codeMap = new HashMap();
+        codeMap.put("code",0);
+        codeMap.put("msg","ok");
+        codeMap.put("data",user);
+        return codeMap;
+
+    }
 }

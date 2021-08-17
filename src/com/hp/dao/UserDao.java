@@ -335,6 +335,44 @@ public class UserDao {
         return i;
     }
 
+    //根据 id 做查询
+    public User selectUserById(Integer id){
+        User user = new User();
+        //1.创建出 连接对象
+        Connection conn = DBHelper.getConnection();
+        //2.创建出SQL语句
+        String sql ="select * from t_user where id=?";
+        //3.创建preparedStatement,执行sql
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                user.setCreate_time(rs.getString("create_time"));
+                user.setImg(rs.getString("img"));
+                user.setUsername(rs.getString("username"));
+                user.setReal_name(rs.getString("real_name"));
+                user.setPassword(rs.getString("password"));
+                user.setType(rs.getInt("type"));
+                user.setIs_del(rs.getInt("is_del"));
+                user.setModify_time(rs.getString("modify_time"));
+                user.setId(rs.getInt("id"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
 
     public static void main(String[] args) {
         //全查

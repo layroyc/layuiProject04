@@ -1,5 +1,6 @@
 package com.hp.dao;
 
+import com.hp.bean.Customer;
 import com.hp.util.DBHelper;
 import com.hp.util.PageBeanUtil;
 
@@ -23,9 +24,14 @@ public class CustomerDao {
         String page = (String) map.get("page");
         String limit = (String) map.get("limit");
         String cust_name = (String) map.get("cust_name");
+        String cust_company = (String) map.get("cust_company");
+        String cust_position = (String) map.get("cust_position");
         String cust_phone = (String) map.get("cust_phone");
+        String cust_birth = (String) map.get("cust_birth");
         String cust_sex = (String) map.get("cust_sex");
+        String cust_desc= (String) map.get("cust_desc");
         String username = (String) map.get("username");
+        String create_time = (String) map.get("create_time");
         String modify_time = (String) map.get("modify_time");
         //1.创建出 连接对象
         Connection connection = DBHelper.getConnection();
@@ -71,6 +77,7 @@ public class CustomerDao {
                 dataMap.put("cust_phone",rs.getString("cust_phone"));
                 dataMap.put("cust_birth",rs.getString("cust_birth"));
                 dataMap.put("cust_sex",rs.getInt("cust_sex"));
+                dataMap.put("cust_desc",rs.getString("cust_desc"));
                 dataMap.put("user_id",rs.getInt("user_id"));
                 dataMap.put("create_time",rs.getString("create_time"));
                 dataMap.put("modify_time",rs.getString("modify_time"));
@@ -123,6 +130,68 @@ public class CustomerDao {
             }
         }
         return total;
+    }
+
+    //3.添加
+    public int insertCustomer(Customer customer){
+        //1.创建出 连接对象
+        Connection conn = DBHelper.getConnection();
+        //2.创建出SQL语句
+        String sql = "insert into t_customer values (null,?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement ps = null;
+        int i = 0;
+        try {
+            //3.使用连接对象 获取 预编译对象
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,customer.getCust_name());
+            ps.setString(2,customer.getCust_company());
+            ps.setString(3,customer.getCust_position());
+            ps.setString(4,customer.getCust_phone());
+            ps.setString(5,customer.getCust_birth());
+            ps.setInt(6,customer.getCust_sex());
+            ps.setString(7,customer.getCust_desc());
+            ps.setInt(8,customer.getUser_id());
+            ps.setString(9,customer.getCreate_time());
+            ps.setString(10,customer.getModify_time());
+            //4.执行预编译对象
+            i = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return i;
+    }
+
+    //4.删除
+    public int delCustomer(Customer customer){
+        //1.创建连接对象
+        Connection connection=DBHelper.getConnection();
+        //2.书写sql语句
+        String sql="delete from t_customer where id=?";
+
+        PreparedStatement ps=null;
+        int i=0;
+        try {
+            //3. 预编译 sql 语句
+            ps=connection.prepareStatement(sql);
+            ps.setInt(1,customer.getId());
+            //4.执行  预编译对象
+            i=ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return i;
     }
     //测试
     public static void main(String[] args) {

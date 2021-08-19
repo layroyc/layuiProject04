@@ -22,7 +22,6 @@ public class UserInsertServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("utf-8");
 
-        System.out.println("dafgsbgndfjm");
         //2.收参数
         String username = req.getParameter("username");
         String real_name = req.getParameter("real_name");
@@ -33,14 +32,6 @@ public class UserInsertServlet extends HttpServlet {
         String create_time = req.getParameter("create_time");
         String modify_time = req.getParameter("modify_time");
 
-        System.out.println("username = " + username);
-        System.out.println("real_name = " + real_name);
-        System.out.println("password = " + password);
-        System.out.println("img = " + img);
-        System.out.println("type = " + type);
-        System.out.println("is_del = " + is_del);
-        System.out.println("create_time = " + create_time);
-        System.out.println("modify_time = " + modify_time);
 
         //把接收到的参数封装到 map中
         User user = new User();

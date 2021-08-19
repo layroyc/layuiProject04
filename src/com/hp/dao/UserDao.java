@@ -97,6 +97,47 @@ public class UserDao {
         return users;
     }
 
+    //查询所有的业务员
+    public List<User> selectAllByService(){
+        ArrayList<User> users = new ArrayList<>();
+        //1.创建出 连接对象
+        Connection connection = DBHelper.getConnection();
+        //2.创建出SQL语句
+        String sql = "select * from t_user where type=2 ";
+        //3.使用连接对象 获取 预编译对象
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(sql);
+            //4.执行预编译，得到结果集
+            rs = ps.executeQuery();
+            //5.遍历结果集
+            while (rs.next()){
+                System.out.println("username = " + rs.getString("username"));
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setCreate_time(rs.getString("create_time"));
+                user.setImg(rs.getString("img"));
+                user.setIs_del(rs.getInt("is_del"));
+                user.setModify_time(rs.getString("modify_time"));
+                user.setPassword(rs.getString("password"));
+                user.setReal_name(rs.getString("real_name"));
+                user.setType(rs.getInt("type"));
+                user.setUsername(rs.getString("username"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return users;
+    }
+
     //m 是 页数page
     //n 是 条数limit
     //动态的带参数的分页查询  mybatis讲 会简化

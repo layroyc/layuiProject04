@@ -87,6 +87,16 @@ public class UserService {
         return codeMap;
     }
 
+    //全查业务员
+    public Map selectAllByService(){
+        UserDao dao = new UserDao();
+        List<User> users = dao.selectAllByService();
+        Map codeMap = new HashMap();
+        codeMap.put("code",0);
+        codeMap.put("msg","ok");
+        codeMap.put("data",users);
+        return codeMap;
+    }
     //按照id 查询1个user
     public Map selectUserById(Integer id){
         UserDao dao = new UserDao();
